@@ -58,12 +58,44 @@ model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accura
 # training model
 model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=50, batch_size=64)
 #,validation_data=(x_test,y_test)
-# y_pred = model.predict(x_test)
+y_pred = model.predict(x_test)
 # print(y_pred)
 # cm = confusion_matrix(y_test, y_pred)
 # print(cm)
 # print(model.predict(test))
+df = pd.DataFrame(y_pred, columns = [0,1,2])
+maxValueIndex = df.idxmax(axis=1)
+df2 = pd.DataFrame(y_test, columns = [0,1,2])
+maxValueIndex2 = df2.idxmax(axis=1)
+#print(maxValueIndex)
+#,validation_data=(x_test,y_test)
+maxValueIndex.to_numpy()
+maxValueIndex2.to_numpy()
+print(maxValueIndex2)
+cm = confusion_matrix(maxValueIndex2, maxValueIndex)
+print(cm)
+n_classes = 3
 
+# np.set_printoptions(suppress=True, precision=4)
+
+
+for c in range(n_classes):
+    tp = cm[c,c]
+    fp = sum(cm[:,c]) - cm[c,c]
+    fn = sum(cm[c,:]) - cm[c,c]
+    tn = sum(np.delete(sum(cm)-cm[c,:],c))
+
+    accuracy = (tp+tn)/(tp+tn+fn+fp)
+    recall = tp/(tp+fn)
+    precision = tp/(tp+fp)
+    specificity = tn/(tn+fp)
+    f1_score = 2*((precision*recall)/(precision+recall))
+    
+
+    #print(f"for class {c}: acc {accuracy}, recall {recall},\
+    #      precision {precision}, f1 {f1_score}")
+    print("for class {}: accuracy {}, recall {}, specificity {}\
+          precision {}, f1 {}".format(c,round(accuracy,4),round(recall,4), round(specificity,4), round(precision,4),round(f1_score,4)))
 
 
 #https://www.nbshare.io/notebook/626706996/Learn-And-Code-Confusion-Matrix-With-Python/

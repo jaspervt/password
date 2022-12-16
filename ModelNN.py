@@ -9,14 +9,14 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import confusion_matrix
 
-data = pd.read_csv("outputDataset.csv")
+data = pd.read_csv("output.csv")
 data.dropna()
 
 # y = strength(nieuw) |||| x = length, numdigits,num_upper en numlower
 # wat voor , is voor rows selecteren na , is voor kolommen
 # Alle features
-x = data.iloc[:, [3,4,6,7,8,9,10,11,12,13,16,17,20,21,22,23]]
-# print(x)
+x = data.iloc[:, [3,4,6,7,8,9,10,11,12,13,16,17,20,21,22,23,25]]
+print(x)
 # print(x.shape)
 # test = data.iloc[1:6,[2,3,5,6,7,8,9,10,11,12]]
 # print(test)
@@ -26,8 +26,8 @@ y = data.iloc[:,5:6]
 # print(y)
 
 #Normalizing/scaling the data
-# sc = StandardScaler()
-# x = sc.fit_transform(x)
+sc = StandardScaler()
+x = sc.fit_transform(x)
 # print(x.shape)
 # print(x)
 
@@ -56,7 +56,7 @@ model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accura
 
 # print(model.summary())
 # training model
-model.fit(x_train,y_train, epochs=50, batch_size=64)
+model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=50, batch_size=64)
 #,validation_data=(x_test,y_test)
 # y_pred = model.predict(x_test)
 # print(y_pred)

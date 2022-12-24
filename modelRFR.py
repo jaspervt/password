@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import confusion_matrix
+from sklearn.ensemble import RandomForestRegressor
 
 data = pd.read_csv("output.csv")
 data.dropna()
@@ -16,7 +17,7 @@ data.dropna()
 # wat voor , is voor rows selecteren na , is voor kolommen
 # Alle features
 x = data.iloc[:, [3,4,6,7,8,9,10,11,12,13,16,17,20,21,22,23,25]]
-print(x)
+# print(x)
 # print(x.shape)
 # test = data.iloc[1:6,[2,3,5,6,7,8,9,10,11,12]]
 # print(test)
@@ -38,26 +39,12 @@ y = ohe.fit_transform(y).toarray()
 # print(y)
 
 #split train en test data train_data = 90% van de data
-x_train, x_test, y_train, y_test = train_test_split(x,y, test_size= 0.1)
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size= 0.05)
 
+model = RandomForestRegressor(n_estimators = 10)
+model.fit(x_train,y_train)
+print(model.score(x_test, y_test))
 
-model = Sequential()
-# input_dim moet gelijk aan x (kolommen) en laatste laag moet gelijk aan output die je kan krijgen
-#Neuraal netwerk maken
-model.add(Dense(100, input_dim=length_x, activation='relu'))
-model.add(Dense(50,activation='relu'))
-# model.add(Dense(50,activation='relu'))
-model.add(Dense(3,activation='softmax'))
-
-
-#specify loss function and the optimizer
-model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
-
-
-# print(model.summary())
-# training model
-model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=10, batch_size=64)
-#,validation_data=(x_test,y_test)
 y_pred = model.predict(x_test)
 # print(y_pred)
 # cm = confusion_matrix(y_test, y_pred)
@@ -97,6 +84,4 @@ for c in range(n_classes):
     print("for class {}: accuracy {}, recall {}, specificity {}\
           precision {}, f1 {}".format(c,round(accuracy,4),round(recall,4), round(specificity,4), round(precision,4),round(f1_score,4)))
 
-
-#https://www.nbshare.io/notebook/626706996/Learn-And-Code-Confusion-Matrix-With-Python/
-#https://datascience.stackexchange.com/questions/42599/what-is-the-relationship-between-the-accuracy-and-the-loss-in-deep-learning#:~:text=Accuracy%20can%20be%20seen%20as,a%20few%20data%20(best%20case)
+#0.7298

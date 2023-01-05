@@ -80,12 +80,11 @@ n_classes = 3
 
 # np.set_printoptions(suppress=True, precision=4)
 y_pred = np.argmax(y_pred, axis=1)
-confusion_mtx = confusion_matrix(maxValueIndex , maxValueIndex2)
 f,ax = plt.subplots(figsize=(12, 12))
-sns.heatmap(confusion_mtx, annot=True, 
+sns.heatmap(cm, annot=True, 
             linewidths=0.01,
             linecolor="white", 
-            fmt= '.1f',ax=ax,)
+            fmt= '.1f',ax=ax,cmap="Blues")
 sns.color_palette("rocket", as_cmap=True)
 
 plt.xlabel("Predicted Label")

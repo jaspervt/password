@@ -4,11 +4,14 @@ import numpy as np
 import keras
 from keras.models import Sequential
 from keras.layers import Dense
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import confusion_matrix
 from sklearn.ensemble import RandomForestRegressor
+import seaborn as sns
+from sklearn.metrics import confusion_matrix, precision_recall_curve, average_precision_score, roc_auc_score, auc, roc_curve
 
 data = pd.read_csv("output.csv")
 data.dropna()
@@ -46,6 +49,12 @@ model.fit(x_train,y_train)
 print(model.score(x_test, y_test))
 
 y_pred = model.predict(x_test)
+y_test0 = y_test[:,0]
+y_pred0 = y_pred[:,0]
+y_test1 = y_test[:,1]
+y_pred1 = y_pred[:,1]
+y_test2 = y_test[:,2]
+y_pred2 = y_pred[:,2]
 # print(y_pred)
 # cm = confusion_matrix(y_test, y_pred)
 # print(cm)
@@ -62,6 +71,19 @@ print(maxValueIndex2)
 cm = confusion_matrix(maxValueIndex2, maxValueIndex)
 print(cm)
 n_classes = 3
+
+y_pred = np.argmax(y_pred, axis=1)
+f,ax = plt.subplots(figsize=(12, 12))
+sns.heatmap(cm, annot=True, 
+            linewidths=0.01,
+            linecolor="white", 
+            fmt= '.1f',ax=ax,cmap="Blues")
+sns.color_palette("rocket", as_cmap=True)
+
+plt.xlabel("Predicted Label")
+plt.ylabel("True Label")
+plt.title("Confusion Matrix")
+plt.show()
 
 # np.set_printoptions(suppress=True, precision=4)
 
@@ -85,3 +107,44 @@ for c in range(n_classes):
           precision {}, f1 {}".format(c,round(accuracy,4),round(recall,4), round(specificity,4), round(precision,4),round(f1_score,4)))
 
 #0.7298
+false_positive_rate, recall, thresholds = roc_curve(y_test0,y_pred0)
+roc_auc = auc(false_positive_rate, recall)
+plt.figure()
+plt.title('ROC Strength 0')
+plt.plot(false_positive_rate, recall, 'b', label = 'AUC = %0.3f' %roc_auc)
+plt.legend(loc='lower right')
+plt.plot([0,1], [0,1], 'r--')
+plt.xlim([0.0,1.0])
+plt.ylim([0.0,1.0])
+plt.ylabel('Recall')
+plt.xlabel('Fall-out (1-Specificity)')
+
+false_positive_rate, recall, thresholds = roc_curve(y_test1,y_pred1)
+roc_auc = auc(false_positive_rate, recall)
+print(roc_auc)
+print(false_positive_rate, recall, thresholds)
+plt.figure()
+plt.title('ROC Strength 1')
+plt.plot(false_positive_rate, recall, 'b', label = 'AUC = %0.3f' %roc_auc)
+plt.legend(loc='lower right')
+plt.plot([0,1], [0,1], 'r--')
+plt.xlim([0.0,1.0])
+plt.ylim([0.0,1.0])
+plt.ylabel('Recall')
+plt.xlabel('Fall-out (1-Specificity)')
+
+false_positive_rate, recall, thresholds = roc_curve(y_test2,y_pred2)
+roc_auc = auc(false_positive_rate, recall)
+print(roc_auc)
+print(false_positive_rate, recall, thresholds)
+plt.figure()
+plt.title('ROC Strength 2')
+plt.plot(false_positive_rate, recall, 'b', label = 'AUC = %0.3f' %roc_auc)
+plt.legend(loc='lower right')
+plt.plot([0,1], [0,1], 'r--')
+plt.xlim([0.0,1.0])
+plt.ylim([0.0,1.0])
+plt.ylabel('Recall')
+plt.xlabel('Fall-out (1-Specificity)')
+plt.show()   
+    

@@ -9,7 +9,8 @@ from keras.layers import Dense
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, precision_recall_curve, average_precision_score, roc_auc_score, auc, roc_curve
+import ROC
 
 data = pd.read_csv("output.csv")
 data.dropna()
@@ -58,10 +59,15 @@ model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accura
 
 # print(model.summary())
 # training model
-model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=10, batch_size=64)
+model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=50, batch_size=64)
 #,validation_data=(x_test,y_test)
 y_pred = model.predict(x_test)
-# print(y_pred)
+y_test0 = y_test[:,0]
+y_pred0 = y_pred[:,0]
+y_test1 = y_test[:,1]
+y_pred1 = y_pred[:,1]
+y_test2 = y_test[:,2]
+y_pred2 = y_pred[:,2]
 # cm = confusion_matrix(y_test, y_pred)
 # print(cm)
 # print(model.predict(test))
@@ -73,9 +79,7 @@ maxValueIndex2 = df2.idxmax(axis=1)
 #,validation_data=(x_test,y_test)
 maxValueIndex.to_numpy()
 maxValueIndex2.to_numpy()
-print(maxValueIndex2)
 cm = confusion_matrix(maxValueIndex2, maxValueIndex)
-print(cm)
 n_classes = 3
 
 # np.set_printoptions(suppress=True, precision=4)
@@ -103,12 +107,58 @@ for c in range(n_classes):
     precision = tp/(tp+fp)
     specificity = tn/(tn+fp)
     f1_score = 2*((precision*recall)/(precision+recall))
+    #prc = precision_recall_curve(maxValueIndex2[0][:], maxValueIndex[0][:])
+    #aps = average_precision_score 
+    #ras = roc_auc_score 
+    #auc = auc(specificity, recall) 
+
+    print("for class {}: accuracy {}, recall {}, specificity {}\
+          precision {}, f1 {}".format(c,round(accuracy,4),round(recall,4), round(specificity,4), round(precision,4),round(f1_score,4)))
+
+false_positive_rate, recall, thresholds = roc_curve(y_test0,y_pred0)
+roc_auc = auc(false_positive_rate, recall)
+plt.figure()
+plt.title('ROC Strength 0')
+plt.plot(false_positive_rate, recall, 'b', label = 'AUC = %0.3f' %roc_auc)
+plt.legend(loc='lower right')
+plt.plot([0,1], [0,1], 'r--')
+plt.xlim([0.0,1.0])
+plt.ylim([0.0,1.0])
+plt.ylabel('Recall')
+plt.xlabel('Fall-out (1-Specificity)')
+
+false_positive_rate, recall, thresholds = roc_curve(y_test1,y_pred1)
+roc_auc = auc(false_positive_rate, recall)
+print(roc_auc)
+print(false_positive_rate, recall, thresholds)
+plt.figure()
+plt.title('ROC Strength 1')
+plt.plot(false_positive_rate, recall, 'b', label = 'AUC = %0.3f' %roc_auc)
+plt.legend(loc='lower right')
+plt.plot([0,1], [0,1], 'r--')
+plt.xlim([0.0,1.0])
+plt.ylim([0.0,1.0])
+plt.ylabel('Recall')
+plt.xlabel('Fall-out (1-Specificity)')
+
+false_positive_rate, recall, thresholds = roc_curve(y_test2,y_pred2)
+roc_auc = auc(false_positive_rate, recall)
+print(roc_auc)
+print(false_positive_rate, recall, thresholds)
+plt.figure()
+plt.title('ROC Strength 2')
+plt.plot(false_positive_rate, recall, 'b', label = 'AUC = %0.3f' %roc_auc)
+plt.legend(loc='lower right')
+plt.plot([0,1], [0,1], 'r--')
+plt.xlim([0.0,1.0])
+plt.ylim([0.0,1.0])
+plt.ylabel('Recall')
+plt.xlabel('Fall-out (1-Specificity)')
+plt.show()   
     
 
     #print(f"for class {c}: acc {accuracy}, recall {recall},\
     #      precision {precision}, f1 {f1_score}")
-    print("for class {}: accuracy {}, recall {}, specificity {}\
-          precision {}, f1 {}".format(c,round(accuracy,4),round(recall,4), round(specificity,4), round(precision,4),round(f1_score,4)))
 
 
 #https://www.nbshare.io/notebook/626706996/Learn-And-Code-Confusion-Matrix-With-Python/

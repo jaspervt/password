@@ -2,6 +2,8 @@
 import pandas as pd
 import numpy as np
 import keras
+import seaborn as sns
+import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.model_selection import train_test_split
@@ -56,7 +58,7 @@ model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accura
 
 # print(model.summary())
 # training model
-model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=50, batch_size=64)
+model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=1, batch_size=64)
 #,validation_data=(x_test,y_test)
 y_pred = model.predict(x_test)
 # print(y_pred)
@@ -77,7 +79,19 @@ print(cm)
 n_classes = 3
 
 # np.set_printoptions(suppress=True, precision=4)
+y_pred = np.argmax(y_pred, axis=1)
+confusion_mtx = confusion_matrix(maxValueIndex , maxValueIndex2)
+f,ax = plt.subplots(figsize=(12, 12))
+sns.heatmap(confusion_mtx, annot=True, 
+            linewidths=0.01,
+            linecolor="white", 
+            fmt= '.1f',ax=ax,)
+sns.color_palette("rocket", as_cmap=True)
 
+plt.xlabel("Predicted Label")
+plt.ylabel("True Label")
+plt.title("Confusion Matrix")
+plt.show()
 
 for c in range(n_classes):
     tp = cm[c,c]

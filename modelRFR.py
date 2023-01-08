@@ -2,11 +2,11 @@
 from os import path
 import numpy as np
 import pandas as pd
-from keras.models import load_model
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.ensemble import RandomForestRegressor
+from joblib import dump, load
 import plot_generator
 
 
@@ -36,17 +36,18 @@ y = ohe.fit_transform(y).toarray()
 # Split train and test data. Train data is 95% of the data
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size= 0.05)
 
-# Create a model object
-model = RandomForestRegressor(n_estimators = 10)
 
 # Train or load the model
-if path.exists("ModelRFR.h5"): # Load the model
-    imported_model = load_model("ModelRFR.h5")
+if path.exists("ModelRFR.joblib"): # Load the model
+    model = load('ModelRFR.joblib') 
     print("Loaded model")
 else: # Train the model
+    # Create a model object
+    model = RandomForestRegressor(n_estimators = 10)
+
     print("Train model")
     model.fit(x_train,y_train)
-    model.save("ModelRFR.h5")
+    dump(model, "ModelRFR.joblib")
     print("Saves model")
 
 print("Model score:")

@@ -39,23 +39,26 @@ y = ohe.fit_transform(y).toarray()
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size= 0.1)
 
 
-# Create a model object
-model = Sequential()
-# input_dim should be the amount of x columns and the last layer must be the amount of outputs you want
-# Define the layers of the neural network
-model.add(Dense(100, input_dim=length_x, activation='relu'))
-model.add(Dense(50,activation='relu'))
-# model.add(Dense(50,activation='relu'))
-model.add(Dense(3,activation='softmax'))
-#specify loss function and the optimizer
-model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
+
 
 
 # Train or load the model
 if path.exists("ModelNN.h5"): # Load the model
-    imported_model = load_model("ModelNN.h5")
+    model = load_model("ModelNN.h5")
     print("Loaded model")
+    
 else: # Train the model
+    # Create a model object
+    model = Sequential()
+    # input_dim should be the amount of x columns and the last layer must be the amount of outputs you want
+    # Define the layers of the neural network
+    model.add(Dense(100, input_dim=length_x, activation='relu'))
+    model.add(Dense(50,activation='relu'))
+    # model.add(Dense(50,activation='relu'))
+    model.add(Dense(3,activation='softmax'))
+    #specify loss function and the optimizer
+    model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
+
     print("Train model")
     model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=1, batch_size=64)
     model.save("ModelNN.h5")

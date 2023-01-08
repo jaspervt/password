@@ -2,11 +2,11 @@
 from os import path
 import numpy as np
 import pandas as pd
-from keras.models import load_model
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.tree import DecisionTreeClassifier
+from joblib import dump, load
 import plot_generator
 
 
@@ -36,17 +36,18 @@ y = ohe.fit_transform(y).toarray()
 # Split train and test data. Train data is 95% of the data
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size= 0.05)
 
-# Create a model object
-model = DecisionTreeClassifier()
 
 # Train or load the model
-if path.exists("ModelDESCT.h5"): # Load the model
-    imported_model = load_model("ModelDESCT.h5")
+if path.exists("ModelDESCT.joblib"): # Load the model
+    model = load("ModelDESCT.joblib")
     print("Loaded model")
 else: # Train the model
+    # Create a model object
+    model = DecisionTreeClassifier()
+
     print("Train model")
     model.fit(x_train,y_train)
-    model.save("ModelDESCT.h5")
+    dump(model, "ModelDESCT.joblib")
     print("Saves model")
 
 print("Model score:")

@@ -7,7 +7,8 @@ from sklearn.metrics import confusion_matrix, precision_recall_curve, average_pr
 
 def generatePlots(y_test, y_pred):
 
-    # create confusion matrix
+    # Create confusion matrix
+    print("Create confusion matrix")
     df = pd.DataFrame(y_pred, columns = [0,1,2])
     maxValueIndex = df.idxmax(axis=1)
     df2 = pd.DataFrame(y_test, columns = [0,1,2])
@@ -34,6 +35,7 @@ def generatePlots(y_test, y_pred):
 
 
     # Calculate error measurments
+    print("Calculate error measurments")
     for c in range(n_classes):
         tp = cm[c,c]
         fp = sum(cm[:,c]) - cm[c,c]
@@ -56,6 +58,7 @@ def generatePlots(y_test, y_pred):
 
 
     # Creat ROC Strength plots
+    print("Creat ROC Strength plots")
     y_test0 = y_test[:,0]
     y_pred0 = y_pred[:,0]
     y_test1 = y_test[:,1]

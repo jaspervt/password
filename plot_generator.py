@@ -59,55 +59,22 @@ def generatePlots(y_test, y_pred):
 
     # Creat ROC Strength plots
     print("Creat ROC Strength plots")
-    y_test0 = y_test[:,0]
-    y_pred0 = y_pred[:,0]
-    y_test1 = y_test[:,1]
-    y_pred1 = y_pred[:,1]
-    y_test2 = y_test[:,2]
-    y_pred2 = y_pred[:,2]
-    y_pred = np.argmax(y_pred, axis=1)
+    for i in range(0,3):
+        y_test2 = y_test[:,i]
+        y_pred2 = y_pred[:,i]
 
-    false_positive_rate, recall, thresholds = roc_curve(y_test0,y_pred0)
-    roc_auc = auc(false_positive_rate, recall)
-    plt.figure()
-    plt.title('ROC Strength 0')
-    plt.plot(false_positive_rate, recall, 'b', label = 'AUC = %0.3f' %roc_auc)
-    plt.legend(loc='lower right')
-    plt.plot([0,1], [0,1], 'r--')
-    plt.xlim([0.0,1.0])
-    plt.ylim([0.0,1.0])
-    plt.ylabel('Recall')
-    plt.xlabel('Fall-out (1-Specificity)')
-
-    false_positive_rate, recall, thresholds = roc_curve(y_test1,y_pred1)
-    roc_auc = auc(false_positive_rate, recall)
-    print(roc_auc)
-    print(false_positive_rate, recall, thresholds)
-    plt.figure()
-    plt.title('ROC Strength 1')
-    plt.plot(false_positive_rate, recall, 'b', label = 'AUC = %0.3f' %roc_auc)
-    plt.legend(loc='lower right')
-    plt.plot([0,1], [0,1], 'r--')
-    plt.xlim([0.0,1.0])
-    plt.ylim([0.0,1.0])
-    plt.ylabel('Recall')
-    plt.xlabel('Fall-out (1-Specificity)')
-
-    false_positive_rate, recall, thresholds = roc_curve(y_test2,y_pred2)
-    roc_auc = auc(false_positive_rate, recall)
-    print(roc_auc)
-    print(false_positive_rate, recall, thresholds)
-    plt.figure()
-    plt.title('ROC Strength 2')
-    plt.plot(false_positive_rate, recall, 'b', label = 'AUC = %0.3f' %roc_auc)
-    plt.legend(loc='lower right')
-    plt.plot([0,1], [0,1], 'r--')
-    plt.xlim([0.0,1.0])
-    plt.ylim([0.0,1.0])
-    plt.ylabel('Recall')
-    plt.xlabel('Fall-out (1-Specificity)')
+        false_positive_rate, recall, thresholds = roc_curve(y_test2,y_pred2)
+        roc_auc = auc(false_positive_rate, recall)
+        plt.figure()
+        plt.title('ROC Strength {}'.format(i))
+        plt.plot(false_positive_rate, recall, 'b', label = 'AUC = %0.3f' %roc_auc)
+        plt.legend(loc='lower right')
+        plt.plot([0,1], [0,1], 'r--')
+        plt.xlim([0.0,1.0])
+        plt.ylim([0.0,1.0])
+        plt.ylabel('Recall')
+        plt.xlabel('Fall-out (1-Specificity)')
+        
     plt.show()
 
 
-#https://www.nbshare.io/notebook/626706996/Learn-And-Code-Confusion-Matrix-With-Python/
-#https://datascience.stackexchange.com/questions/42599/what-is-the-relationship-between-the-accuracy-and-the-loss-in-deep-learning#:~:text=Accuracy%20can%20be%20seen%20as,a%20few%20data%20(best%20case)

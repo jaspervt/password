@@ -1,9 +1,11 @@
 #Libraries
+from os import path
 import pandas as pd
 import numpy as np
 import keras
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.models import load_model
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -45,7 +47,16 @@ y = ohe.fit_transform(y).toarray()
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size= 0.05)
 
 model = DecisionTreeClassifier()
-model.fit(x_train,y_train)
+
+if path.exists("ModelDESCT.h5"): # Load the model
+    imported_model = load_model("ModelDESCT.h5")
+    print("Loaded model")
+else: # Train the model
+    print("Train model")
+    model.fit(x_train,y_train)
+    model.save("ModelDESCT.h5")
+    print("Saves model")
+
 print(model.score(x_test, y_test))
 y_pred = model.predict(x_test)
 y_test0 = y_test[:,0]

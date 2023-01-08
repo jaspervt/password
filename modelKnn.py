@@ -1,9 +1,11 @@
 #Libraries
+from os import path
 import pandas as pd
 import numpy as np
 import keras
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.models import load_model
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
@@ -46,7 +48,16 @@ x_train, x_test, y_train, y_test = train_test_split(x,y, test_size= 0.05)
 
 
 model = KNeighborsClassifier(n_neighbors=3)
-model.fit(x_train,y_train)
+
+if path.exists("ModelKnn.h5"): # Load the model
+    imported_model = load_model("ModelKnn.h5")
+    print("Loaded model")
+else: # Train the model
+    print("Train model")
+    model.fit(x_train,y_train)
+    model.save("ModelKnn.h5")
+    print("Saves model")
+
 print(model.score(x_test, y_test))
 
 y_pred = model.predict(x_test)

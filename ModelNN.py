@@ -1,4 +1,5 @@
 #Libraries
+from os import path
 import pandas as pd
 import numpy as np
 import keras
@@ -6,6 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.models import load_model
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
@@ -58,12 +60,17 @@ model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accura
 
 
 # print(model.summary())
-# training model
-model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=1, batch_size=64)
-#,validation_data=(x_test,y_test)
-y_pred = model.predict(x_test)
 
-#model.save("PasswordGrader_model.h5")
+if path.exists("ModelNN.h5"): # Load the model
+    imported_model = load_model("ModelNN.h5")
+    print("Loaded model")
+else: # Train the model
+    print("Train model")
+    model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=1, batch_size=64)
+    model.save("ModelNN.h5")
+    print("Saves model")
+
+y_pred = model.predict(x_test)
 
 y_test0 = y_test[:,0]
 y_pred0 = y_pred[:,0]

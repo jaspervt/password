@@ -59,9 +59,12 @@ model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accura
 
 # print(model.summary())
 # training model
-model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=50, batch_size=64)
+model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=1, batch_size=64)
 #,validation_data=(x_test,y_test)
 y_pred = model.predict(x_test)
+
+#model.save("PasswordGrader_model.h5")
+
 y_test0 = y_test[:,0]
 y_pred0 = y_pred[:,0]
 y_test1 = y_test[:,1]

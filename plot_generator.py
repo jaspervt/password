@@ -58,7 +58,7 @@ def generatePlots(y_test, y_pred):
 
 
     # Creat ROC Strength plots
-    print("Creat ROC Strength plots")
+    print("Create ROC Strength plots")
     for i in range(0,3):
         y_test2 = y_test[:,i]
         y_pred2 = y_pred[:,i]

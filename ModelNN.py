@@ -2,9 +2,9 @@
 from os import path
 import numpy as np
 import pandas as pd
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.models import load_model
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.models import load_model
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
@@ -60,7 +60,7 @@ else: # Train the model
     model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
 
     print("Train model")
-    model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=1, batch_size=64)
+    model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=100, batch_size=32)
     model.save("ModelNN.h5")
     print("Saves model")
 

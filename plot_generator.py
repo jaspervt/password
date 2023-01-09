@@ -34,8 +34,8 @@ def generatePlots(y_test, y_pred):
 
 
 
-    # Calculate error measurments
-    print("Calculate error measurments")
+    # Calculate error measurements
+    print("Calculate error measurements")
     for c in range(n_classes):
         tp = cm[c,c]
         fp = sum(cm[:,c]) - cm[c,c]

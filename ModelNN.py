@@ -14,10 +14,6 @@ import plot_generator
 data = pd.read_csv("output.csv")
 data.dropna()
 
-# Test
-# data = data.iloc[0:5,]
-# print(data)
-
 # All features
 x = data.iloc[:, [3,4,6,7,8,9,10,11,12,13,16,17,20,21,22,23,25]]
 length_x = x.shape[1]
@@ -37,9 +33,6 @@ y = ohe.fit_transform(y).toarray()
 
 #split train en test data train_data = 90% van de data
 x_train, x_test, y_train, y_test = train_test_split(x,y, test_size= 0.1)
-
-
-
 
 
 # Train or load the model

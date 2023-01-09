@@ -13,10 +13,6 @@ import plot_generator
 data = pd.read_csv("output.csv")
 data.dropna()
 
-# Test
-# data = data.iloc[0:5,]
-# print(data)
-
 # All features
 x = data.iloc[:, [3,4,6,7,8,9,10,11,12,13,16,17,20,21,22,23,25]]
 

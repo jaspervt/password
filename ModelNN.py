@@ -12,6 +12,7 @@ from sklearn.preprocessing import OneHotEncoder
 import plot_generator
 
 
+
 data = pd.read_csv("output.csv")
 data.dropna()
 
@@ -47,15 +48,14 @@ else: # Train the model
     # Define the layers of the neural network
     model.add(Dense(100, input_dim=length_x, activation='relu'))
     model.add(Dense(50,activation='relu'))
-    # model.add(Dense(50,activation='relu'))
     model.add(Dense(3,activation='softmax'))
     #specify loss function and the optimizer
     model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
 
     print("Train model")
     #amount of epochs
-    epochs = 50
-    training = model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=epochs, batch_size=2048)
+    epochs = 10
+    training = model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=epochs, batch_size=128)
     #save model
     model.save("ModelNN.h5")
     print("Saves model")
@@ -64,6 +64,7 @@ else: # Train the model
     
 # Predict the strength of the test data
 y_pred = model.predict(x_test)
+
 
 # Generate plots and error measurements of the output of the model
 if 'train_hist' in locals():

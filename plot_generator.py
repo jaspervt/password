@@ -4,6 +4,8 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, precision_recall_curve, average_precision_score, roc_auc_score, auc, roc_curve
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import multilabel_confusion_matrix
 
 def generatePlots(y_test, y_pred):
 
@@ -13,6 +15,9 @@ def generatePlots(y_test, y_pred):
     maxValueIndex = df.idxmax(axis=1)
     df2 = pd.DataFrame(y_test, columns = [0,1,2])
     maxValueIndex2 = df2.idxmax(axis=1)
+    print("accuracy:")
+    print(accuracy_score(maxValueIndex2, maxValueIndex))
+
 
     maxValueIndex.to_numpy()
     maxValueIndex2.to_numpy()

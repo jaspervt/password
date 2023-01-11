@@ -29,8 +29,8 @@ x = sc.fit_transform(x)
 ohe = OneHotEncoder()
 y = ohe.fit_transform(y).toarray()
 
-# Split train and test data. Train data is 95% of the data
-x_train, x_test, y_train, y_test = train_test_split(x,y, test_size= 0.05)
+# Split train and test data. Train data is 90% of the data
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size= 0.1)
 
 
 # Train or load the model
@@ -39,15 +39,15 @@ if path.exists("ModelRFR.joblib"): # Load the model
     print("Loaded model")
 else: # Train the model
     # Create a model object
-    model = RandomForestRegressor(n_estimators = 10)
+    model = RandomForestRegressor(n_estimators = 30)
 
     print("Train model")
     model.fit(x_train,y_train)
     dump(model, "ModelRFR.joblib")
     print("Saves model")
 
-print("Model score:")
-print(model.score(x_test, y_test))
+# print("Model score:")
+# print(model.score(x_test, y_test))
 
 # Predict the strength of the test data
 y_pred = model.predict(x_test)

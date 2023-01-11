@@ -2,9 +2,10 @@
 from os import path
 import numpy as np
 import pandas as pd
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.models import load_model
+import matplotlib.pyplot as plt
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.models import load_model
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
@@ -20,7 +21,6 @@ length_x = x.shape[1]
 
 # new_strength = 5, new_strength2 = 24
 y = data.iloc[:,5:6]
-
 
 #Normalizing/scaling the data
 sc = StandardScaler()
@@ -53,12 +53,21 @@ else: # Train the model
     model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['accuracy'])
 
     print("Train model")
-    model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=100, batch_size=32)
+    #amount of epochs
+    epochs = 50
+    training = model.fit(x_train,y_train, validation_data=(x_test, y_test), epochs=epochs, batch_size=2048)
+    #save model
     model.save("ModelNN.h5")
     print("Saves model")
-
+    train_hist = pd.DataFrame(training.history)
+    
+    
 # Predict the strength of the test data
 y_pred = model.predict(x_test)
 
 # Generate plots and error measurements of the output of the model
-plot_generator.generatePlots(y_test, y_pred)
+if 'train_hist' in locals():
+    plot_generator.generate_per_epoch(y_test, y_pred, train_hist, epochs)
+else:
+    plot_generator.generatePlots(y_test, y_pred)
+

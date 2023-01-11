@@ -24,7 +24,7 @@ def generatePlots(y_test, y_pred):
     sns.heatmap(cm, annot=True, 
                 linewidths=0.01,
                 linecolor="white", 
-                fmt= '.1f',ax=ax,cmap="Blues")
+                fmt= 'g',ax=ax,cmap="Blues")
     sns.color_palette("rocket", as_cmap=True)
 
     plt.xlabel("Predicted Label")
@@ -78,3 +78,21 @@ def generatePlots(y_test, y_pred):
     plt.show()
 
 
+def generate_per_epoch(y_test, y_pred,train_hist,epochs):
+    plt.figure(figsize=(10,4))
+    plt.plot(train_hist[['loss','val_loss']])
+    plt.legend(['loss','val_loss'])
+    plt.title('Loss Per Epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+
+    #plot accuracy per epoch
+    plt.figure(figsize=(10,4))
+    plt.plot(train_hist[['accuracy','val_accuracy']])
+    plt.legend(['accuracy','val_accuracy'])
+    plt.title('Accuracy Per Epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.show()
+
+    generatePlots(y_test, y_pred)

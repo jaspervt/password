@@ -12,7 +12,6 @@ from sklearn.preprocessing import OneHotEncoder
 import plot_generator
 
 
-
 data = pd.read_csv("output.csv")
 data.dropna()
 
@@ -71,4 +70,3 @@ if 'train_hist' in locals():
     plot_generator.generate_per_epoch(y_test, y_pred, train_hist, epochs)
 else:
     plot_generator.generatePlots(y_test, y_pred)
-

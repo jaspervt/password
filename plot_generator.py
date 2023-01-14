@@ -37,8 +37,7 @@ def generatePlots(y_test, y_pred):
     plt.title("Confusion Matrix")
     plt.show()
 
-
-
+    
     # Calculate error measurements
     print("Calculate error measurements")
     for c in range(n_classes):

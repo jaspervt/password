@@ -18,3 +18,6 @@ The scripts in this repository require the following libraries:
 
 ## Usage
 To use the scripts, clone the repository and navigate to the directory in your terminal. Then, run the desired script using Python.
+
+## Saved model
+The ModelNN.h5 is the trained model for neural network. This model is trained with 250 epochs with a batch size of 128.
